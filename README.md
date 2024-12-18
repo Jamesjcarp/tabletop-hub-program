@@ -1,6 +1,6 @@
 # DnD music program
 
-This projects is still in early developmental stages using a lot of hard coding for swapping assets
+This projects is still in early developmental stages using a lot of hard coding for swapping assets.
 current development goals:
   * Re-add overlay functionality from winforms prototype to new WPF version.
   * update battle map to allow for animations to play
