@@ -12,7 +12,7 @@ namespace TableTopHubApp
     /// <summary>
     /// Manager class to open map and icon data files.
     /// </summary>
-    internal class MapManager
+    internal static class MapManager
     {
         //name -> [name,path,x,y]
         private static readonly Dictionary<string, string[]> Maps = new Dictionary<string, string[]>();
@@ -33,6 +33,8 @@ namespace TableTopHubApp
                 Maps[split[0]] = [split[0], split[1], split[2], split[3]];
             }
 
+            Maps.TrimExcess();
+
             string[] iconContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\IconList.txt"));
 
             for(int i = 0; i < iconContent.Length; i++)
@@ -40,6 +42,8 @@ namespace TableTopHubApp
                 string[] split = iconContent[i].Split(",");
                 Icons[split[0]] = [split[0],split[1],split[2]];
             }
+
+            Icons.TrimExcess();
         }
 
         /// <summary>

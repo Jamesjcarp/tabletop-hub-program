@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TableTopHubApp"
         mc:Ignorable="d"
-        Title="OverlayScreen" Height="450" Width="800">
-    <Grid>
-        
+        Title="OverlayScreen" Height="250" Width="400"
+        AllowsTransparency="True" WindowStyle="None"
+        MouseMove="OverlayMouseMove"
+        >
+    <Grid Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
     </Grid>
 </Window>

@@ -12,9 +12,9 @@ namespace TableTopHubApp
     using WpfAnimatedGif;
 
     /// <summary>
-    /// Create Icon class derives from the Image class and is a png contained within an ellipse to look like an icon for the battle map.
+    /// Creature Icon class contains the methods required to create a circular creature for the board. 
     /// </summary>
-    internal class CreatureIcon : Image
+    internal class CreatureIcon
     {
         private ImageBrush iconImage = new ImageBrush();
         private VisualBrush iconGif = new VisualBrush();

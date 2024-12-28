@@ -56,6 +56,11 @@ namespace TableTopHubApp
             // todo
         }
 
+        private void EditOverlayClick(object sender, RoutedEventArgs e)
+        {
+            App.OverlayTab.ChangeWindowState();
+        }
+
         /// <summary>
         /// Event raised when the window is closed. makes sure to end playback of music. in the future close the other windows when this happens.
         /// </summary>

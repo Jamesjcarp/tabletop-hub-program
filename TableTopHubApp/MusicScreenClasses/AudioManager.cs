@@ -14,7 +14,7 @@ namespace TableTopHubApp
     /// <summary>
     /// Manager for audio handles data reading and file opening.
     /// </summary>
-    internal class AudioManager
+    internal static class AudioManager
     {
         // dictionary containing name -> [intro file name, loop file name]
         private static readonly Dictionary<string, string[]> Tracks = new Dictionary<string, string[]>();
@@ -34,6 +34,8 @@ namespace TableTopHubApp
                 Tracks[split[0]] = [split[1], split[2]];
             }
 
+            Tracks.TrimExcess();
+
             string[] soundEffectContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\SoundEffectList.txt"));
 
             for (int i = 0; i < soundEffectContent.Length; i++)
@@ -41,6 +43,8 @@ namespace TableTopHubApp
                 string[] split = soundEffectContent[i].Split(',');
                 SoundEffects[split[0]] = split[1];
             }
+
+            SoundEffects.TrimExcess();
         }
 
         /// <summary>
