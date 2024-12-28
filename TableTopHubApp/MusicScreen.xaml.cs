@@ -21,6 +21,7 @@ namespace TableTopHubApp
             this.InitializeComponent();
 
             AudioManager.InitTracks();
+            OverlayManager.InitAssets();
             AudioPlayer audioPlayer = new AudioPlayer();
 
             this.musicOptions.ItemsSource = AudioManager.GetTrackTitles();
@@ -28,6 +29,9 @@ namespace TableTopHubApp
 
             this.soundOptions.ItemsSource = AudioManager.GetSoundTitles();
             this.soundOptions.SelectedIndex = 0;
+
+            this.overlayOptions.ItemsSource = OverlayManager.GetOverlayTitles();
+            this.overlayOptions.SelectedIndex = 0;
         }
 
         private void PlayMusicClick(object sender, RoutedEventArgs e)
@@ -54,6 +58,19 @@ namespace TableTopHubApp
         private void StopSoundClick(object sender, RoutedEventArgs e)
         {
             // todo
+        }
+
+        private void EnableOverlayClick(object sender, RoutedEventArgs e)
+        {
+            if (this.overlayOptions.SelectedValue != null)
+            {
+                App.OverlayTab.EnableOverlayElement(this.overlayOptions.SelectedValue.ToString() !);
+            }
+        }
+
+        private void DisableOverlayClick(object sender, RoutedEventArgs e)
+        {
+            App.OverlayTab.DisableOverlayElement();
         }
 
         private void EditOverlayClick(object sender, RoutedEventArgs e)

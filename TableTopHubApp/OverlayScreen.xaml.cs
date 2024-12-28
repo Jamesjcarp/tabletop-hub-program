@@ -28,6 +28,8 @@ namespace TableTopHubApp
 
         private static UIElement? screenElement;
 
+        private static MediaElement overlayVideo = new MediaElement();
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OverlayScreen"/> class.
         /// </summary>
@@ -91,7 +93,37 @@ namespace TableTopHubApp
         /// <param name="elementName">Name of the element to display.</param>
         public void EnableOverlayElement(string elementName)
         {
+            if (!editing)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    Dictionary<string, string[]> overlayDat = OverlayManager.GetOverlayObjects();
 
+                    if (overlayDat.ContainsKey(elementName))
+                    {
+                        this.DisableOverlayElement();
+                        switch (overlayDat[elementName][2])
+                        {
+                            // Handle each of the file types seperatly
+                            case "IMAGE":
+                                this.EnableImage(overlayDat[elementName]);
+                                break;
+                            case "VIDEO":
+                                this.EnableVideo(overlayDat[elementName]);
+                                break;
+                            case "GIF":
+                                this.EnableGif(overlayDat[elementName]);
+                                break;
+                            default:
+                                throw new Exception("unrecognized file format");
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("unrecognized overlay name");
+                    }
+                });
+            }
         }
 
         /// <summary>
@@ -99,8 +131,92 @@ namespace TableTopHubApp
         /// </summary>
         public void DisableOverlayElement()
         {
-            this.grid.Children.Clear();
-            screenElement = null;
+            if (!editing)
+            {
+                this.Dispatcher.Invoke(() =>
+                {
+                    this.grid.Children.Clear();
+                    screenElement = null;
+                });
+            }
+        }
+
+        private void EnableImage(string[] imageDat)
+        {
+            Image overlay = new Image();
+            if (imageDat[4] == "NULL")
+            {
+                BitmapImage imageFile = new BitmapImage();
+
+                imageFile.BeginInit();
+
+                imageFile.UriSource = new Uri(OverlayManager.GetOverlayPath(imageDat[0]));
+
+                imageFile.EndInit();
+
+                overlay.Source = imageFile;
+
+                screenElement = overlay;
+
+                this.grid.Children.Add(screenElement);
+            }
+            else
+            {
+                //case for green screen images. implement later
+                throw new Exception("green screen images not implemented");
+            }
+        }
+
+        private void EnableVideo(string[] videoDat)
+        {
+            //makes sure that spamming start video doesn't stack events.
+            overlayVideo.MediaEnded -= this.DisposeVideo;
+
+            // looping video.
+            if (videoDat[3] == "TRUE")
+            {
+                // video has no green screen.
+                if(videoDat[4] == "NULL")
+                {
+
+                }
+
+                // video uses a green screen.
+                else
+                {
+
+                }
+            }
+
+            // video plays once.
+            else
+            {
+                // video has no green screen.
+                if(videoDat[4] == "NULL")
+                {
+                    overlayVideo.LoadedBehavior = MediaState.Manual;
+                    overlayVideo.Source = new Uri(OverlayManager.GetOverlayPath(videoDat[0]), UriKind.Absolute);
+
+                    screenElement = overlayVideo;
+
+                    this.grid.Children.Add(screenElement);
+
+                    overlayVideo.Play();
+
+                    overlayVideo.MediaEnded += this.DisposeVideo;
+                }
+
+                //video uses a green screen.
+                else
+                {
+
+                }
+            }
+        }
+
+        private void EnableGif(string[] gifDat)
+        {
+
         }
 
         private void OverlayMouseMove(object sender, MouseEventArgs e)
@@ -109,6 +225,17 @@ namespace TableTopHubApp
             {
                 this.DragMove();
             }
+        }
+
+        private void DisposeVideo(object sender, EventArgs e)
+        {
+            this.grid.Children.Clear();
+
+            overlayVideo.MediaEnded -= this.DisposeVideo;
+
+            overlayVideo.Close();
+
+            overlayVideo = new MediaElement();
         }
     }
 }
