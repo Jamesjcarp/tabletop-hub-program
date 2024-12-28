@@ -2,9 +2,10 @@
 
 This projects is still in early developmental stages using a lot of hard coding for swapping assets.
 current development goals:
-  * Re-add overlay functionality from winforms prototype to new WPF version.
-  * update battle map to allow for animations to play
-  * add map and overlay options to main UI window to allow for runtime changes to each.
+  * Re-add overlay functionality from winforms prototype to new WPF version. - PARTIALLY IMPLEMENTED
+  * update battle map to allow for animations to play - IMPLEMENTED
+  * add map and overlay options to main UI window to allow for runtime changes to each. - FRAMEWORK IN PLACE
+  * look into merging manager classes into one class to cut down on repitition.
   * add window to create assets on user side to allow for easy upload of files for use such as music or maps.
   * allow for editing of assets.
   * create stats window for use of keeping track of creatures in battle enabling clicking on the creature icon to pull up th e window.
