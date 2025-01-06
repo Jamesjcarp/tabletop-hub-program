@@ -11,5 +11,6 @@ current development goals:
   * allow for keybinds that allow user to activate multiple things at once with customizability.
   * create stats window for use of keeping track of creatures in battle enabling clicking on the creature icon to pull up the window.
   * remove prototype files from winforms version (DnD music program).
+  * add effects system that allows for cool visual effects whenever a creature attacks another one
 
 This is a personal project created by me to allow myself to more effectivly run ttrpg games for my friends. The alternatives I found online I think are too restrictive and/or pay walled. So I decided to create my own. This program makes use of multiple running threads to run three seperate windows simultniously. This allows for online play where you can stream just the window that you want your players to see while still being able to keep the info you don't want them seeing on the other UI window. This allows for more effective running of games with less akward pausing to set up music, sounds, battles and screen effects.
