@@ -25,6 +25,9 @@ namespace TableTopHubApp
         /// </summary>
         public static void InitMaps()
         {
+            Maps.Clear();
+            Icons.Clear();
+
             string[] mapContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\MapList.txt"));
 
             for (int i = 0; i < mapContent.Length; i++)

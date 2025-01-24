@@ -45,8 +45,7 @@ namespace TableTopHubApp
             this.mapOptions.ItemsSource = MapManager.GetMapTitles();
             this.mapOptions.SelectedIndex = 0;
 
-            this.activeGrid = this.addContentGrid;
-            this.activeSubGrid = this.addContentSubGrid;
+            this.activeGrid = this.mainGrid;
         }
 
         private void ScreenChangeClick(object sender, RoutedEventArgs e)
@@ -208,6 +207,17 @@ namespace TableTopHubApp
             this.AddContentIconWidthBox.Text = string.Empty;
             this.AddContentIconHeightBox.Text = string.Empty;
             this.addContentIconConfirmFeedback.Text = string.Empty;
+
+            this.addContentOverlayOpenFileFeedback.Text = string.Empty;
+            this.addContentOverlayNameBox.Text = string.Empty;
+            this.addContentOverlayConfirmFeedback.Text = string.Empty;
+
+            this.addContentMapOpenFileFeedback.Text = string.Empty;
+            this.addContentMapNameBox.Text = string.Empty;
+            this.AddContentMapWidthBox.Text = string.Empty;
+            this.AddContentMapHeightBox.Text = string.Empty;
+            this.addContentMapConfirmFeedback.Text = string.Empty;
+
             // edit section
 
             // remove section
@@ -272,10 +282,28 @@ namespace TableTopHubApp
             else if(sourceButton.Name == "addContentOverlayOpenFileButton")
             {
                 result = FileManager.OpenFile("overlay");
+                if (result == true)
+                {
+                    this.addContentOverlayOpenFileFeedback.Text = "Current file: " + FileManager.CurrentFilePath;
+                }
+                else
+                {
+                    this.addContentOverlayOpenFileFeedback.Text = "Error: could not open file";
+                }
+
+                return;
             }
             else if(sourceButton.Name == "addContentMapOpenFileButton")
             {
                 result = FileManager.OpenFile("map");
+                if (result == true)
+                {
+                    this.addContentMapOpenFileFeedback.Text = "Current file: " + FileManager.CurrentFilePath;
+                }
+                else
+                {
+                    this.addContentMapOpenFileFeedback.Text = "Error: could not open file";
+                }
             }
             else if(sourceButton.Name == "addContentIconOpenFileButton")
             {
@@ -333,17 +361,18 @@ namespace TableTopHubApp
                 data[2] = "NULL";
             }
 
-            if (FileManager.CopyFile("music") == true && (data[2] == "NULL" || FileManager.CopyFile("intro") == true))
+            FileManager.CopyFile("music");
+            if (data[2] != "NULL")
             {
-                FileManager.AddData("music", data);
-                this.ContentClearAll();
-                this.addContentMusicConfirmFeedback.Text = "Successfully added!";
+                FileManager.CopyFile("intro");
             }
-            else
-            {
-                this.addContentMusicConfirmFeedback.Text = "Error: file duplicate detected";
-                return;
-            }
+
+            FileManager.AddData("music", data);
+            this.ContentClearAll();
+            this.addContentMusicConfirmFeedback.Text = "Successfully added!";
+            AudioManager.InitTracks();
+            this.musicOptions.ItemsSource = AudioManager.GetTrackTitles();
+            this.musicOptions.SelectedIndex = 0;
         }
 
         private void AddContentSoundConfirmClick(object sender, RoutedEventArgs e)
@@ -375,17 +404,14 @@ namespace TableTopHubApp
                 return;
             }
 
-            if(FileManager.CopyFile("sound") == true)
-            {
-                FileManager.AddData("sound", data);
-                this.ContentClearAll();
-                this.addContentSoundConfirmFeedback.Text = "Successfully added!";
-            }
-            else
-            {
-                this.addContentSoundConfirmFeedback.Text = "Error: file duplicate detected";
-                return;
-            }
+            FileManager.CopyFile("sound");
+
+            FileManager.AddData("sound", data);
+            this.ContentClearAll();
+            this.addContentSoundConfirmFeedback.Text = "Successfully added!";
+            AudioManager.InitTracks();
+            this.soundOptions.ItemsSource = AudioManager.GetSoundTitles();
+            this.soundOptions.SelectedIndex = 0;
         }
 
         private void AddContentIconConfirmClick(object sender, RoutedEventArgs e)
@@ -464,17 +490,140 @@ namespace TableTopHubApp
                 return;
             }
 
-            if (FileManager.CopyFile("icon") == true)
+            FileManager.CopyFile("icon");
+            FileManager.AddData("icon", data);
+            this.ContentClearAll();
+            this.addContentIconConfirmFeedback.Text = "Successfully added!";
+            MapManager.InitMaps();
+            this.iconOptions.ItemsSource = MapManager.GetIconTitles();
+            this.iconOptions.SelectedIndex = 0;
+        }
+
+        private void AddContentOverlayConfirmClick(object sender, RoutedEventArgs e)
+        {
+            string[] data = new string[5];
+            if (this.addContentOverlayNameBox.Text.Length > 0)
             {
-                FileManager.AddData("icon", data);
-                this.ContentClearAll();
-                this.addContentIconConfirmFeedback.Text = "Successfully added!";
+                data[0] = this.addContentOverlayNameBox.Text;
+                if (data[0].Contains(','))
+                {
+                    this.addContentOverlayConfirmFeedback.Text = "Error: names may not contain the character ','";
+                    return;
+                }
             }
             else
             {
-                this.addContentSoundConfirmFeedback.Text = "Error: file duplicate detected";
+                this.addContentOverlayConfirmFeedback.Text = "Error: no name provided";
                 return;
             }
+
+            if (FileManager.CurrentFilePath != string.Empty)
+            {
+                data[1] = Path.GetFileName(FileManager.CurrentFilePath);
+            }
+            else
+            {
+                this.addContentOverlayConfirmFeedback.Text = "Error: no file provided";
+                return;
+            }
+
+            if (Path.GetExtension(FileManager.CurrentFilePath) == ".mov" || Path.GetExtension(FileManager.CurrentFilePath) == ".mp4")
+            {
+                data[2] = "VIDEO";
+                data[3] = "FALSE";
+                data[4] = "NULL";
+            }
+            else
+            {
+                data[2] = "IMAGE";
+                data[3] = "NULL";
+                data[4] = "NULL";
+            }
+
+            FileManager.CopyFile("overlay");
+            FileManager.AddData("overlay", data);
+            this.ContentClearAll();
+            this.addContentOverlayConfirmFeedback.Text = "Successfully added!";
+            OverlayManager.InitAssets();
+            this.overlayOptions.ItemsSource = OverlayManager.GetOverlayTitles();
+            this.overlayOptions.SelectedIndex = 0;
+        }
+
+        private void AddContentMapConfirmClick(object sender, RoutedEventArgs e)
+        {
+            string[] data = new string[4];
+
+            if (this.addContentMapNameBox.Text.Length > 0)
+            {
+                data[0] = this.addContentMapNameBox.Text;
+                if (data[0].Contains(','))
+                {
+                    this.addContentMapConfirmFeedback.Text = "Error: names may not contain the character ','";
+                    return;
+                }
+            }
+            else
+            {
+                this.addContentMapConfirmFeedback.Text = "Error: no name provided";
+                return;
+            }
+
+            if (FileManager.CurrentFilePath != string.Empty)
+            {
+                data[1] = Path.GetFileName(FileManager.CurrentFilePath);
+            }
+            else
+            {
+                this.addContentMapConfirmFeedback.Text = "Error: no file provided";
+                return;
+            }
+
+            int width = 1;
+            if (this.AddContentMapWidthBox.Text.Length > 0)
+            {
+                if (int.TryParse(this.AddContentMapWidthBox.Text, out width))
+                {
+                    data[2] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapWidthBox.Text, @"\s", string.Empty);
+                }
+                else
+                {
+                    this.addContentMapConfirmFeedback.Text = "Error: please use only numbers in your width, (for now whole numbers only)";
+                    return;
+                }
+            }
+            else
+            {
+                this.addContentMapConfirmFeedback.Text = "Error: no width provided";
+                return;
+            }
+
+            int height = 1;
+            if (this.AddContentMapHeightBox.Text.Length > 0)
+            {
+                if (int.TryParse(this.AddContentMapHeightBox.Text, out height))
+                {
+                    data[3] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapHeightBox.Text, @"\s", string.Empty);
+                }
+                else
+                {
+                    this.addContentMapConfirmFeedback.Text = "Error: please use only numbers in your height, (for now whole numbers only)";
+                    return;
+                }
+            }
+            else
+            {
+                this.addContentMapConfirmFeedback.Text = "Error: no height provided";
+                return;
+            }
+
+
+            FileManager.CopyFile("map");
+            FileManager.AddData("map", data);
+            this.ContentClearAll();
+            this.addContentMapConfirmFeedback.Text = "Successfully added!";
+            MapManager.InitMaps();
+            this.mapOptions.ItemsSource = MapManager.GetMapTitles();
+            this.mapOptions.SelectedIndex = 0;
         }
 
         private void PlayMusicClick(object sender, RoutedEventArgs e)

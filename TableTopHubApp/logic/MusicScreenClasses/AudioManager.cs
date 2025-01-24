@@ -26,6 +26,9 @@ namespace TableTopHubApp
         /// </summary>
         public static void InitTracks()
         {
+            Tracks.Clear();
+            SoundEffects.Clear();
+
             string[] musicContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\Tracklist.txt"));
 
             for (int i = 0; i < musicContent.Length; i++)

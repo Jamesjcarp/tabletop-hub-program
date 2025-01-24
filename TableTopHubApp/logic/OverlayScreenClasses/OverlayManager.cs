@@ -27,6 +27,8 @@ namespace TableTopHubApp
         /// </summary>
         public static void InitAssets()
         {
+            OverlayObjects.Clear();
+
             string[] assetContent = File.ReadAllLines(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\OverlayList.txt"));
 
             for (int i = 0; i < assetContent.Length; i++)
