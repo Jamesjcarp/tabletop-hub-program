@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnD music program", "DnD music program\DnD music program.csproj", "{0C9C9960-B1D6-4BCC-B47E-9E76A8B265EE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableTopHubApp", "TableTopHubApp\TableTopHubApp.csproj", "{F47051BC-4963-45CB-9136-4239EC334677}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21092DE5-3056-494F-B99B-C7534D4165A5}"
@@ -18,10 +16,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C9C9960-B1D6-4BCC-B47E-9E76A8B265EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C9C9960-B1D6-4BCC-B47E-9E76A8B265EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C9C9960-B1D6-4BCC-B47E-9E76A8B265EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C9C9960-B1D6-4BCC-B47E-9E76A8B265EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F47051BC-4963-45CB-9136-4239EC334677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F47051BC-4963-45CB-9136-4239EC334677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F47051BC-4963-45CB-9136-4239EC334677}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,0 +1,460 @@
+﻿<Window x:Class="TableTopHubApp.MusicScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TableTopHubApp"
+        mc:Ignorable="d"
+        Title="MusicScreen" Height="900" Width="1600"
+        Closing="MusicScreenClosing">
+    <Window.Resources>
+        <local:WidthToFontSizeConverter x:Key="WidthToFontSizeConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" x:Name="mainScreenButton" Margin="20" Click="ScreenChangeClick" Content="Main Screen"></Button>
+            <Button Grid.Column="1" x:Name="addContentScreenButton" Margin="20" Click="ScreenChangeClick" Content="Add Screen"></Button>
+            <Button Grid.Column="2" x:Name="statsScreenButton" Margin="20" Click="ScreenChangeClick" Content="Stats Screen"></Button>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="mainGrid" IsEnabled="False" Visibility="Hidden">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonPlayMusic" Margin="10" Click="PlayMusicClick" Content="Play">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="1" x:Name="buttonStopMusic" Margin="10" Click="StopMusicClick" Content="Stop">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <Slider Grid.Row="1" Grid.Column="0" Value="50" Minimum="0" Maximum="100" Name="musicVolume" ValueChanged="MusicVolumeChanged"></Slider>
+
+            <Grid Grid.Row="0" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonEnableOverlay" Margin="10" Click="EnableOverlayClick" Content="Enable">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="1" x:Name="buttonDisableOverlay" Margin="10" Click="DisableOverlayClick" Content="Disable">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="overlayOptions" >
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+
+            <Button Grid.Row="1" Grid.Column="2" Name="editOverlay" Margin="30" Click="EditOverlayClick" Content="Edit">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button Grid.Row="2" Grid.Column="2" Name="addIcon" Margin="30" Click="AddIconClick" Content="Add Icon">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Grid Grid.Row="2" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="iconOptions" >
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+
+            <Button Grid.Row="3" Grid.Column="2" Name="selectMap" Margin="30" Click="SelectMapClick" Content="Open Map">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Grid Grid.Row="3" Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="mapOptions" >
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+
+
+
+            <Grid Grid.Row="2" Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="buttonPlaySound" Margin="10" Click="PlaySoundClick" Content="Play">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Grid.Column="1" x:Name="buttonStopSound" Margin="10" Click="StopSoundClick" Content="Stop">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+
+            <Slider Grid.Row="3" Grid.Column="0" Value="50" Minimum="0" Maximum="100" Name="soundVolume" ValueChanged="SoundVolumeChanged"></Slider>
+
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="musicOptions" >
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="5*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="soundOptions" >
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="addContentGrid" IsEnabled="True" Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" x:Name="addContentButton" Margin="30" Click="AddContentSubScreenChange" Content="Add"></Button>
+                <Button Grid.Column="1" x:Name="editContentButton" Margin="30" Click="AddContentSubScreenChange" Content="Edit"></Button>
+                <Button Grid.Column="2" x:Name="removeContentButton" Margin="30" Click="AddContentSubScreenChange" Content="Remove"></Button>
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="addContentSubGrid" IsEnabled="True" Visibility="Visible">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="5*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Column="1" Grid.Row="1" x:Name="addContentMusicGrid" IsEnabled="False" Visibility="Hidden">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Column="0" Grid.Row="0" x:Name="addContentMusicOpenFileButton"  Margin="30" Click="AddContentOpenFileClick" Content="Select Loop File">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" x:Name="addContentMusicOpenFileFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+
+                    <Button Grid.Column="0" Grid.Row="1" x:Name="addContentMusicIntroOpenFileButton"  Margin="30" Click="AddContentOpenFileClick" Content="Select Intro File">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" Grid.Row="1" x:Name="addContentMusicIntroOpenFileFeedback" Margin="40"></TextBlock>
+
+                    <TextBlock Grid.Row="2" Margin="40" Text="Type a name for your file"></TextBlock>
+
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="addContentMusicNameBox" Margin="30" Background="LightGray"></TextBox>
+
+                    <Button Grid.Column="2" Grid.Row="0" Margin="40" Click="AddContentMusicConfirmClick" Content="confirm selection">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="3" x:Name="addContentMusicConfirmFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+                </Grid>
+
+                <Grid Grid.Column="1" Grid.Row="1" x:Name="addContentSoundGrid" IsEnabled="False" Visibility="Hidden">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Column="0" Grid.Row="0" x:Name="addContentSoundOpenFileButton"  Margin="30" Click="AddContentOpenFileClick" Content="Select sound effect file">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" x:Name="addContentSoundOpenFileFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+
+                    <TextBlock Grid.Row="2" Margin="40" Text="Type a name for your sound"></TextBlock>
+
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="addContentSoundNameBox" Margin="30" Background="LightGray"></TextBox>
+
+                    <Button Grid.Column="2" Grid.Row="0" Margin="40" Click="AddContentSoundConfirmClick" Content="confirm selection">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="3" x:Name="addContentSoundConfirmFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+                </Grid>
+
+                <Grid Grid.Column="1" Grid.Row="1" x:Name="addContentIconGrid" IsEnabled="True" Visibility="Visible">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Button Grid.Column="0" Grid.Row="0" x:Name="addContentIconOpenFileButton"  Margin="30" Click="AddContentOpenFileClick" Content="Select sound effect file">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" x:Name="addContentIconOpenFileFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+
+                    <TextBlock Grid.Row="2" Margin="40" Text="Type a name for your icon"></TextBlock>
+
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="addContentIconNameBox" Margin="30" Background="LightGray"></TextBox>
+
+                    <Button Grid.Column="2" Grid.Row="0" Margin="40" Click="AddContentIconConfirmClick" Content="confirm selection">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Grid.Column="3" x:Name="addContentIconConfirmFeedback" Margin="40" TextWrapping="Wrap"></TextBlock>
+
+                    <Grid Grid.Row="2" Grid.Column="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Width:" Margin=" 20"></TextBlock>
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="AddContentIconWidthBox" Background="LightGray" Margin="30"></TextBox>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Height:" Margin="20"></TextBlock>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="AddContentIconHeightBox" Background="LightGray" Margin="30"></TextBox>
+                        
+                        
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Column="1" Grid.Row="1" x:Name="addContentOverlayGrid" IsEnabled="False" Visibility="Hidden"></Grid>
+
+                <Grid Grid.Column="1" Grid.Row="1" x:Name="addContentMapGrid" IsEnabled="False" Visibility="Hidden"></Grid>
+
+                <ComboBox x:Name="addContentTypeDropdown" Margin="30" SelectionChanged="AddContentTypeDropdownChanged" SelectedIndex="0">
+                    <ComboBoxItem Name="music" Content="music"></ComboBoxItem>
+                    <ComboBoxItem Name="sound" Content="sound"></ComboBoxItem>
+                    <ComboBoxItem Name="overlay" Content="overlay"></ComboBoxItem>
+                    <ComboBoxItem Name="icon" Content="icon"></ComboBoxItem>
+                    <ComboBoxItem Name="map" Content="map"></ComboBoxItem>
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="FontSize" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource WidthToFontSizeConverter}}" />
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="editContentSubGrid" IsEnabled="False" Visibility="Hidden">
+                
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="removeContentSubGrid" IsEnabled="False" Visibility="Hidden">
+                
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" x:Name="statsGrid" IsEnabled="False" Visibility="Visible"></Grid>
+    </Grid>
+    
+</Window>

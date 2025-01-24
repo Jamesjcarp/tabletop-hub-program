@@ -40,7 +40,7 @@ namespace TableTopHubApp
             for(int i = 0; i < iconContent.Length; i++)
             {
                 string[] split = iconContent[i].Split(",");
-                Icons[split[0]] = [split[0],split[1],split[2]];
+                Icons[split[0]] = [split[0], split[1], split[2], split[3], split[4]];
             }
 
             Icons.TrimExcess();
@@ -80,6 +80,48 @@ namespace TableTopHubApp
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Helper function to get the number of cells an icon takes up horizontally.
+        /// </summary>
+        /// <param name="name">Key to icon.</param>
+        /// <returns>Integer value of width.</returns>
+        public static int GetIconWidth(string name)
+        {
+            int width;
+            int.TryParse(Icons[name][3], out width);
+            return width;
+        }
+
+        /// <summary>
+        /// Helper function to get the number of cells an icon takes up vertically.
+        /// </summary>
+        /// <param name="name">Key to icon.</param>
+        /// <returns>Integer value of height.</returns>
+        public static int GetIconHeight(string name)
+        {
+            int height;
+            int.TryParse (Icons[name][4], out height);
+            return height;
+        }
+
+        /// <summary>
+        /// Gets the list of icon titles for UI.
+        /// </summary>
+        /// <returns>List of string titles.</returns>
+        public static List<string> GetIconTitles()
+        {
+            return Icons.Keys.ToList();
+        }
+
+        /// <summary>
+        /// Gets the list of map titles for UI.
+        /// </summary>
+        /// <returns>List of string sound effects.</returns>
+        public static List<string> GetMapTitles()
+        {
+            return Maps.Keys.ToList();
         }
     }
 }

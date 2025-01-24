@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="stylecop.json" />
+    <AdditionalFiles Include="ui\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

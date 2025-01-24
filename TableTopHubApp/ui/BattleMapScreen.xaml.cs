@@ -35,15 +35,6 @@ namespace TableTopHubApp
 
             this.mapGrid.ShowGridLines = false;
 
-            this.OpenMap("abandoned city");
-
-            this.AddCreature("galio");
-            this.AddCreature("rob");
-            this.AddCreature("daos");
-            this.AddCreature("farren");
-            this.AddCreature("ellie");
-            this.AddCreature("coco");
-
             this.mapGrid.MouseDown += this.MapGridMouseDown;
             this.mapGrid.MouseMove += this.MapGridMouseMove;
             this.mapGrid.MouseUp += this.MapGridMouseUp;
@@ -58,12 +49,17 @@ namespace TableTopHubApp
         /// <param name="creatureName">name of the creature.</param>
         public void AddCreature(string creatureName)
         {
-            CreatureIcon creature = new CreatureIcon();
-            creature.ChangeIcon(creatureName);
-            Ellipse creatureIcon = creature.GetIcon();
-            Grid.SetColumn(creatureIcon, 0);
-            Grid.SetRow(creatureIcon, 0);
-            this.mapGrid.Children.Add(creatureIcon);
+            this.Dispatcher.Invoke(() =>
+            {
+                CreatureIcon creature = new CreatureIcon();
+                creature.ChangeIcon(creatureName);
+                Ellipse creatureIcon = creature.GetIcon();
+                Grid.SetColumn(creatureIcon, 0);
+                Grid.SetRow(creatureIcon, 0);
+                Grid.SetColumnSpan(creatureIcon, creature.GetIconWidth());
+                Grid.SetRowSpan(creatureIcon, creature.GetIconHeight());
+                this.mapGrid.Children.Add(creatureIcon);
+            });
         }
 
         /// <summary>
@@ -72,45 +68,74 @@ namespace TableTopHubApp
         /// <param name="mapName">name of the map.</param>
         public void OpenMap(string mapName)
         {
-            this.canvas.Children.Clear();
+            this.Dispatcher.Invoke(() => {
 
-            string[] mapData = MapManager.GetMaps()[mapName];
+                this.canvas.Children.Clear();
 
-            int width = -1;
-            int height = -1;
+                this.mapGrid.Children.Clear();
 
-            int.TryParse(mapData[2], out width);
-            int.TryParse(mapData[3], out height);
+                this.mapGrid.MouseDown -= this.MapGridMouseDown;
+                this.mapGrid.MouseMove -= this.MapGridMouseMove;
+                this.mapGrid.MouseUp -= this.MapGridMouseUp;
 
-            BitmapImage bitMap = new BitmapImage();
+                this.mapGrid = new Grid();
 
-            bitMap.BeginInit();
-            bitMap.UriSource = new Uri(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\maps\\", mapData[1]));
+                this.mapGrid.ShowGridLines = true;
 
-            bitMap.DecodePixelWidth = 70 * width;
-            bitMap.EndInit();
-            
-            this.mapImage.Source = bitMap;
-            this.mapImage.Height = 100 * height;
-            this.mapImage.Width = 100 * width;
+                this.mapGrid.MouseDown += this.MapGridMouseDown;
+                this.mapGrid.MouseMove += this.MapGridMouseMove;
+                this.mapGrid.MouseUp += this.MapGridMouseUp;
 
-            this.mapGrid.Height = 100 * height;
-            this.mapGrid.Width = 100 * width;
+                this.mapGrid.AllowDrop = true;
+                this.mapGrid.Background = Brushes.Transparent;
 
-            for(int i = 0; i < width; i++)
-            {
-                ColumnDefinition col = new ColumnDefinition();
-                this.mapGrid.ColumnDefinitions.Add(col);
-            }
+                string[] mapData = MapManager.GetMaps()[mapName];
 
-            for (int i = 0; i < height; i++)
-            {
-                RowDefinition row = new RowDefinition();
-                this.mapGrid.RowDefinitions.Add(row);
-            }
+                int width = -1;
+                int height = -1;
 
-            this.canvas.Children.Add(this.mapImage);
-            this.canvas.Children.Add(this.mapGrid);
+                int.TryParse(mapData[2], out width);
+                int.TryParse(mapData[3], out height);
+
+                BitmapImage bitMap = new BitmapImage();
+
+                bitMap.BeginInit();
+                bitMap.UriSource = new Uri(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\maps\\", mapData[1]));
+
+                bitMap.DecodePixelHeight = 50 * height;
+                bitMap.DecodePixelWidth = 50 * width;
+
+                bitMap.EndInit();
+
+                this.mapImage.Source = bitMap;
+                this.mapImage.Height = 50 * height;
+                this.mapImage.Width = 50 * width;
+
+                this.mapGrid.Height = 50 * height;
+                this.mapGrid.Width = 50 * width;
+
+                this.mapGrid.ColumnDefinitions.Clear();
+                for (int i = 0; i < width; i++)
+                {
+                    ColumnDefinition col = new ColumnDefinition();
+                    this.mapGrid.ColumnDefinitions.Add(col);
+                }
+
+                this.mapGrid.RowDefinitions.Clear();
+                for (int i = 0; i < height; i++)
+                {
+                    RowDefinition row = new RowDefinition();
+                    this.mapGrid.RowDefinitions.Add(row);
+                }
+
+                ImageBrush brush = new ImageBrush();
+                brush.ImageSource = bitMap;
+
+                //this.mapGrid.Background = brush;
+
+                this.canvas.Children.Add(this.mapImage);
+                this.canvas.Children.Add(this.mapGrid);
+            });
         }
 
         // MouseDown event to start the drag
@@ -143,7 +168,7 @@ namespace TableTopHubApp
                 var newTop = mousePos.Y - this.clickPosition.Y;
 
                 // Update the margin of the dragged control to move it
-                //draggedElement.Margin = new Thickness(newLeft, newTop, 0, 0);
+                // draggedElement.Margin = new Thickness(newLeft, newTop, 0, 0);
             }
         }
 
@@ -160,8 +185,8 @@ namespace TableTopHubApp
                 var mousePos = e.GetPosition((UIElement)sender);
 
                 // Calculate the new row and column based on the mouse position
-                int row = (int)(mousePos.Y / this.draggedElement.RenderSize.Height);  // Simple row calculation based on height
-                int column = (int)(mousePos.X / this.draggedElement.RenderSize.Width);  // Simple column calculation based on width
+                int row = (int)(mousePos.Y / this.draggedElement.RenderSize.Height * Grid.GetRowSpan(this.draggedElement));  // Simple row calculation based on height
+                int column = (int)(mousePos.X / this.draggedElement.RenderSize.Width * Grid.GetColumnSpan(this.draggedElement));  // Simple column calculation based on width
 
                 // Ensure the row and column are within bounds
                 row = Math.Min(row, this.mapGrid.RowDefinitions.Count - 1);
@@ -171,7 +196,7 @@ namespace TableTopHubApp
                 Grid.SetRow(this.draggedElement, row);
                 Grid.SetColumn(this.draggedElement, column);
 
-                this.draggedElement = null;  // Clear the dragged element
+                //this.draggedElement = null;  // Clear the dragged element
             }
         }
 
@@ -182,6 +207,14 @@ namespace TableTopHubApp
             var hitTestResult = VisualTreeHelper.HitTest(this.mapGrid, mousePosition);
 
             return hitTestResult?.VisualHit as UIElement;
+        }
+
+        private void Press (object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete || e.Key == Key.Back)
+            {
+                this.mapGrid.Children.Remove(this.draggedElement);
+            }
         }
     }
 }

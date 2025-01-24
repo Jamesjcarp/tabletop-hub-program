@@ -60,9 +60,9 @@ namespace TableTopHubApp
             battleThread.SetApartmentState(ApartmentState.STA);
             battleThread.Start();
 
-            Thread overlayThread = new Thread(this.StartOverlayWindow);
-            overlayThread.SetApartmentState(ApartmentState.STA);
-            overlayThread.Start();
+            //Thread overlayThread = new Thread(this.StartOverlayWindow);
+            //overlayThread.SetApartmentState(ApartmentState.STA);
+            //overlayThread.Start();
         }
 
         private void StartMusicWindow()

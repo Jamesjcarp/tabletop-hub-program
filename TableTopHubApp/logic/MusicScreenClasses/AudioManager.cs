@@ -41,7 +41,10 @@ namespace TableTopHubApp
             for (int i = 0; i < soundEffectContent.Length; i++)
             {
                 string[] split = soundEffectContent[i].Split(',');
-                SoundEffects[split[0]] = split[1];
+                if(split.Length > 1)
+                {
+                    SoundEffects[split[0]] = split[1];
+                }
             }
 
             SoundEffects.TrimExcess();
@@ -57,7 +60,7 @@ namespace TableTopHubApp
         }
 
         /// <summary>
-        /// Gets the list of sund effect names for UI.
+        /// Gets the list of sound effect names for UI.
         /// </summary>
         /// <returns>List of string sound effects.</returns>
         public static List<string> GetSoundTitles()

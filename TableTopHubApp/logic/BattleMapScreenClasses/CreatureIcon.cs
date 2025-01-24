@@ -19,6 +19,7 @@ namespace TableTopHubApp
         private ImageBrush iconImage = new ImageBrush();
         private VisualBrush iconGif = new VisualBrush();
         private Ellipse fullIcon = new Ellipse();
+        private string iconName = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreatureIcon"/> class.
@@ -35,6 +36,8 @@ namespace TableTopHubApp
         /// <param name="iconName">name of the image.</param>
         public void ChangeIcon(string iconName)
         {
+            this.iconName = iconName;
+
             BitmapImage uri = new BitmapImage();
             uri.BeginInit();
 
@@ -67,6 +70,24 @@ namespace TableTopHubApp
         public Ellipse GetIcon()
         {
             return this.fullIcon;
+        }
+
+        /// <summary>
+        /// Gets the width in cells that the icon takes up.
+        /// </summary>
+        /// <returns>Integer width of icon.</returns>
+        public int GetIconWidth()
+        {
+            return MapManager.GetIconWidth(this.iconName);
+        }
+
+        /// <summary>
+        /// Gets the height in cells that the icon takes up.
+        /// </summary>
+        /// <returns>Integer height of icon.</returns>
+        public int GetIconHeight()
+        {
+            return MapManager.GetIconHeight(this.iconName);
         }
     }
 }
