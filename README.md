@@ -6,7 +6,7 @@ current development goals:
   * update battle map to allow for animations to play - IMPLEMENTED
   * add map and overlay options to main UI window to allow for runtime changes to each. - PARTIALLY IMPLEMENTED
   * look into merging manager classes into one class to cut down on repitition.
-  * add window to create assets on user side to allow for easy upload of files for use such as music or maps.
+  * add window to create assets on user side to allow for easy upload of files for use such as music or maps - PARTIALLY IMPLEMENTED.
   * allow for editing of assets.
   * allow for keybinds that allow user to activate multiple things at once with customizability.
   * create stats window for use of keeping track of creatures in battle enabling clicking on the creature icon to pull up the window.
