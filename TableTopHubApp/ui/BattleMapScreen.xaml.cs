@@ -20,6 +20,7 @@ namespace TableTopHubApp
     {
         private Image mapImage = new Image();
         private Grid mapGrid = new Grid();
+        private HexGrid hexMapGrid = new HexGrid();
 
         private bool isDragging = false;
         private Point clickPosition;
@@ -75,28 +76,21 @@ namespace TableTopHubApp
 
                 this.mapGrid.Children.Clear();
 
+                this.hexMapGrid.Children.Clear();
+
                 this.mapGrid.MouseDown -= this.MapGridMouseDown;
                 this.mapGrid.MouseMove -= this.MapGridMouseMove;
                 this.mapGrid.MouseUp -= this.MapGridMouseUp;
-
-                this.mapGrid = new Grid();
-
-                this.mapGrid.ShowGridLines = false;
-
-                this.mapGrid.MouseDown += this.MapGridMouseDown;
-                this.mapGrid.MouseMove += this.MapGridMouseMove;
-                this.mapGrid.MouseUp += this.MapGridMouseUp;
-
-                this.mapGrid.AllowDrop = true;
-                this.mapGrid.Background = Brushes.Transparent;
 
                 string[] mapData = MapManager.GetMaps()[mapName];
 
                 int width = -1;
                 int height = -1;
+                string mapType;
 
                 int.TryParse(mapData[2], out width);
                 int.TryParse(mapData[3], out height);
+                mapType = mapData[4];
 
                 BitmapImage bitMap = new BitmapImage();
 
@@ -112,30 +106,58 @@ namespace TableTopHubApp
                 this.mapImage.Height = 50 * height;
                 this.mapImage.Width = 50 * width;
 
-                this.mapGrid.Height = 50 * height;
-                this.mapGrid.Width = 50 * width;
-
-                this.mapGrid.ColumnDefinitions.Clear();
-                for (int i = 0; i < width; i++)
-                {
-                    ColumnDefinition col = new ColumnDefinition();
-                    this.mapGrid.ColumnDefinitions.Add(col);
-                }
-
-                this.mapGrid.RowDefinitions.Clear();
-                for (int i = 0; i < height; i++)
-                {
-                    RowDefinition row = new RowDefinition();
-                    this.mapGrid.RowDefinitions.Add(row);
-                }
-
                 ImageBrush brush = new ImageBrush();
                 brush.ImageSource = bitMap;
 
-                this.mapGrid.Background = brush;
+                if (mapType == "grid")
+                {
+                    this.mapGrid = new Grid();
 
-                //this.canvas.Children.Add(this.mapImage);
-                this.canvas.Children.Add(this.mapGrid);
+                    this.mapGrid.ShowGridLines = false;
+
+                    this.mapGrid.MouseDown += this.MapGridMouseDown;
+                    this.mapGrid.MouseMove += this.MapGridMouseMove;
+                    this.mapGrid.MouseUp += this.MapGridMouseUp;
+
+                    this.mapGrid.AllowDrop = true;
+                    this.mapGrid.Background = Brushes.Transparent;
+
+                    this.mapGrid.Height = 50 * height;
+                    this.mapGrid.Width = 50 * width;
+
+                    this.mapGrid.ColumnDefinitions.Clear();
+                    for (int i = 0; i < width; i++)
+                    {
+                        ColumnDefinition col = new ColumnDefinition();
+                        this.mapGrid.ColumnDefinitions.Add(col);
+                    }
+
+                    this.mapGrid.RowDefinitions.Clear();
+                    for (int i = 0; i < height; i++)
+                    {
+                        RowDefinition row = new RowDefinition();
+                        this.mapGrid.RowDefinitions.Add(row);
+                    }
+
+                    this.mapGrid.Background = brush;
+
+                    //this.canvas.Children.Add(this.mapImage);
+                    this.canvas.Children.Add(this.mapGrid);
+                } 
+                else if(mapType == "hex")
+                {    
+                    this.hexMapGrid = new HexGrid(width, height, brush);
+
+                    this.hexMapGrid.AllowDrop = true;
+
+                    this.hexMapGrid.Background = brush;
+
+                    this.canvas.Children.Add(this.hexMapGrid);
+                }
+                else 
+                {
+                    throw new ArgumentException("Map Type Error, Map File missing or incorrect Map Type Keyword");
+                }
             });
         }
 

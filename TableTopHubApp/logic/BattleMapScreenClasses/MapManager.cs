@@ -33,7 +33,7 @@ namespace TableTopHubApp
             for (int i = 0; i < mapContent.Length; i++)
             {
                 string[] split = mapContent[i].Split(',');
-                Maps[split[0]] = [split[0], split[1], split[2], split[3]];
+                Maps[split[0]] = [split[0], split[1], split[2], split[3], split[4]];
             }
 
             Maps.TrimExcess();
