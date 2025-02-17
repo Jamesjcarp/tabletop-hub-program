@@ -17,6 +17,11 @@ namespace TableTopHubApp
         private static BattleMapScreen battleTab;
         private static OverlayScreen overlayTab;
 
+        private static Thread musicThread;
+        private static Thread battleThread;
+        private static Thread overlayThread;
+
+
         /// <summary>
         /// Gets or sets the music tab.
         /// </summary>
@@ -55,6 +60,22 @@ namespace TableTopHubApp
             });
         }
 
+        public void BattleThreadKill()
+        {
+            if (battleThread.IsAlive)
+            {
+                battleTab.CloseWindow();
+            }
+        }
+
+        public void OverlayThreadKill()
+        {
+            if (overlayThread.IsAlive)
+            {
+                overlayTab.CloseWindow();
+            }
+        }
+
         /// <summary>
         /// Ran when the application is first run.
         /// </summary>
@@ -63,18 +84,17 @@ namespace TableTopHubApp
         {
             base.OnStartup(e);
 
-            Thread musicThread = new Thread(this.StartMusicWindow);
+            musicThread = new Thread(this.StartMusicWindow);
             musicThread.SetApartmentState(ApartmentState.STA);
             musicThread.Start();
 
-            Thread battleThread = new Thread(this.StartBattleWindow);
+            battleThread = new Thread(this.StartBattleWindow);
             battleThread.SetApartmentState(ApartmentState.STA);
             battleThread.Start();
 
-            Thread overlayThread = new Thread(this.StartOverlayWindow);
+            overlayThread = new Thread(this.StartOverlayWindow);
             overlayThread.SetApartmentState(ApartmentState.STA);
             overlayThread.Start();
-
         }
 
         private void StartMusicWindow()

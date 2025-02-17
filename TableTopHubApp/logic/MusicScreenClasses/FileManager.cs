@@ -129,10 +129,10 @@ namespace TableTopHubApp
         /// Copies the file from it's origional location to the resources folder for later use.
         /// </summary>
         /// <param name="type">the type of resource determines where it will be placed.</param>
+        /// <returns>true if file was copied and fals eif file already exists.</returns>
         public static bool CopyFile(string type)
         {
             string finalLocation = string.Empty;
-
 
             if (File.Exists(currentFilePath) || (File.Exists(currentIntroPath) && type == "intro"))
             {
@@ -183,7 +183,6 @@ namespace TableTopHubApp
                 {
                     throw new Exception("unimplemented type");
                 }
-
 
                 for(int i = 0; i < Directory.GetFiles(finalLocation).Count(); i++)
                 {

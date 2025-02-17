@@ -24,6 +24,7 @@ namespace TableTopHubApp
         /// <summary>
         /// Initializes a new instance of the <see cref="MusicScreen"/> class.
         /// </summary>
+        /// <param name="appRef">Reference to the main thread.</param>
         public MusicScreen(App appRef)
         {
             this.InitializeComponent();
@@ -134,7 +135,6 @@ namespace TableTopHubApp
 
                 this.activeSubGrid = this.removeContentSubGrid;
             }
-
         }
 
         private void AddContentTypeDropdownChanged(object sender, RoutedEventArgs e)
@@ -690,8 +690,9 @@ namespace TableTopHubApp
         private void MusicScreenClosing(object sender, CancelEventArgs e)
         {
             AudioPlayer.StopTrack();
-            App.BattleTab.CloseWindow();
-            App.OverlayTab.CloseWindow();
+
+            this.parentRef.BattleThreadKill();
+            this.parentRef.OverlayThreadKill();
             this.parentRef.EndApp();
         }
 

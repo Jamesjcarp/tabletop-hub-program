@@ -52,7 +52,6 @@ namespace TableTopHubApp
             });
         }
 
-
         /// <summary>
         /// Toggle class to switch between invisible and movable.
         /// </summary>

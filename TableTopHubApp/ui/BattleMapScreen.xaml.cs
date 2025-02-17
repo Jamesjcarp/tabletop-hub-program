@@ -4,6 +4,7 @@
 
 namespace TableTopHubApp
 {
+    using System.ComponentModel;
     using System.IO;
     using System.Windows;
     using System.Windows.Controls;
@@ -70,8 +71,8 @@ namespace TableTopHubApp
         /// <param name="mapName">name of the map.</param>
         public void OpenMap(string mapName)
         {
-            this.Dispatcher.Invoke(() => {
-
+            this.Dispatcher.Invoke(() => 
+            {
                 this.canvas.Children.Clear();
 
                 this.mapGrid.Children.Clear();
