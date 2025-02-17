@@ -19,10 +19,12 @@ namespace TableTopHubApp
         private Grid activeSubGrid = new Grid();
         private Grid activeSubSubGrid = new Grid();
 
+        private App parentRef;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MusicScreen"/> class.
         /// </summary>
-        public MusicScreen()
+        public MusicScreen(App appRef)
         {
             this.InitializeComponent();
 
@@ -46,6 +48,8 @@ namespace TableTopHubApp
             this.mapOptions.SelectedIndex = 0;
 
             this.activeGrid = this.mainGrid;
+
+            this.parentRef = appRef;
         }
 
         private void ScreenChangeClick(object sender, RoutedEventArgs e)
@@ -686,6 +690,9 @@ namespace TableTopHubApp
         private void MusicScreenClosing(object sender, CancelEventArgs e)
         {
             AudioPlayer.StopTrack();
+            App.BattleTab.CloseWindow();
+            App.OverlayTab.CloseWindow();
+            this.parentRef.EndApp();
         }
 
         private void MusicVolumeChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

@@ -45,6 +45,17 @@ namespace TableTopHubApp
         }
 
         /// <summary>
+        /// Method called by other windows to ensure app actually stops running on close.
+        /// </summary>
+        public void EndApp()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.Shutdown();
+            });
+        }
+
+        /// <summary>
         /// Ran when the application is first run.
         /// </summary>
         /// <param name="e">Arguements for when program opens.</param>
@@ -60,14 +71,19 @@ namespace TableTopHubApp
             battleThread.SetApartmentState(ApartmentState.STA);
             battleThread.Start();
 
-            //Thread overlayThread = new Thread(this.StartOverlayWindow);
-            //overlayThread.SetApartmentState(ApartmentState.STA);
-            //overlayThread.Start();
+            Thread overlayThread = new Thread(this.StartOverlayWindow);
+            overlayThread.SetApartmentState(ApartmentState.STA);
+            overlayThread.Start();
+
         }
 
         private void StartMusicWindow()
         {
-            musicTab = new MusicScreen();
+            musicTab = new MusicScreen(this);
+            this.Dispatcher.Invoke(() =>
+            {
+                Current.MainWindow = musicTab;
+            });
             musicTab.ShowDialog();
         }
 

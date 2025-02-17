@@ -214,7 +214,7 @@ namespace TableTopHubApp
         {
             if (type == "music")
             {
-                currentFilePath = Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\Tracklist.txt");
+                currentFilePath = Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\TrackList.txt");
             }
             else if (type == "sound")
             {

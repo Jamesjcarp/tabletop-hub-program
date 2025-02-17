@@ -42,6 +42,18 @@ namespace TableTopHubApp
         }
 
         /// <summary>
+        /// Closes this window.
+        /// </summary>
+        public void CloseWindow()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.Close();
+            });
+        }
+
+
+        /// <summary>
         /// Toggle class to switch between invisible and movable.
         /// </summary>
         public void ChangeWindowState()

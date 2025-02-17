@@ -23,6 +23,7 @@ namespace TableTopHubApp
         private bool isDragging = false;
         private Point clickPosition;
         private UIElement? draggedElement = null;  // This will hold the dragged control
+        private UIElement? selectedElement = null; // This stores the currently selected control
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BattleMapScreen"/> class.
@@ -33,11 +34,12 @@ namespace TableTopHubApp
 
             MapManager.InitMaps();
 
-            this.mapGrid.ShowGridLines = false;
+            this.mapGrid.ShowGridLines = true;
 
             this.mapGrid.MouseDown += this.MapGridMouseDown;
             this.mapGrid.MouseMove += this.MapGridMouseMove;
             this.mapGrid.MouseUp += this.MapGridMouseUp;
+            this.KeyDown += this.OnKeyDown;
 
             this.mapGrid.AllowDrop = true;
             this.mapGrid.Background = Brushes.Transparent;
@@ -54,8 +56,8 @@ namespace TableTopHubApp
                 CreatureIcon creature = new CreatureIcon();
                 creature.ChangeIcon(creatureName);
                 Ellipse creatureIcon = creature.GetIcon();
-                Grid.SetColumn(creatureIcon, 0);
-                Grid.SetRow(creatureIcon, 0);
+                Grid.SetColumn(creatureIcon, creature.GetIconWidth());
+                Grid.SetRow(creatureIcon, creature.GetIconHeight());
                 Grid.SetColumnSpan(creatureIcon, creature.GetIconWidth());
                 Grid.SetRowSpan(creatureIcon, creature.GetIconHeight());
                 this.mapGrid.Children.Add(creatureIcon);
@@ -80,7 +82,7 @@ namespace TableTopHubApp
 
                 this.mapGrid = new Grid();
 
-                this.mapGrid.ShowGridLines = true;
+                this.mapGrid.ShowGridLines = false;
 
                 this.mapGrid.MouseDown += this.MapGridMouseDown;
                 this.mapGrid.MouseMove += this.MapGridMouseMove;
@@ -131,10 +133,21 @@ namespace TableTopHubApp
                 ImageBrush brush = new ImageBrush();
                 brush.ImageSource = bitMap;
 
-                //this.mapGrid.Background = brush;
+                this.mapGrid.Background = brush;
 
-                this.canvas.Children.Add(this.mapImage);
+                //this.canvas.Children.Add(this.mapImage);
                 this.canvas.Children.Add(this.mapGrid);
+            });
+        }
+
+        /// <summary>
+        /// Closes this window.
+        /// </summary>
+        public void CloseWindow()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                this.Close();
             });
         }
 
@@ -143,6 +156,9 @@ namespace TableTopHubApp
         {
             if (e.ChangedButton == MouseButton.Left)
             {
+                this.draggedElement = null;
+                this.selectedElement = null;
+
                 // Check if the mouse is over a control
                 var element = this.GetControlAtMousePosition(e.GetPosition((UIElement)sender));
 
@@ -153,6 +169,8 @@ namespace TableTopHubApp
                     this.draggedElement = element;
                     this.clickPosition = e.GetPosition(this.draggedElement);  // Get the click position on the control
                     this.draggedElement.CaptureMouse();  // Capture mouse to the control
+
+                    this.selectedElement = element;
                 }
             }
         }
@@ -195,8 +213,6 @@ namespace TableTopHubApp
                 // Set the control's position in the grid
                 Grid.SetRow(this.draggedElement, row);
                 Grid.SetColumn(this.draggedElement, column);
-
-                //this.draggedElement = null;  // Clear the dragged element
             }
         }
 
@@ -209,11 +225,16 @@ namespace TableTopHubApp
             return hitTestResult?.VisualHit as UIElement;
         }
 
-        private void Press (object sender, KeyEventArgs e)
+        // KeyDown event to handle the Delete key
+        private void OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete || e.Key == Key.Back)
             {
-                this.mapGrid.Children.Remove(this.draggedElement);
+                if (this.selectedElement != null)
+                {
+                    this.mapGrid.Children.Remove(this.selectedElement);
+                    this.selectedElement = null;  // Clear selected element after deletion
+                }
             }
         }
     }
