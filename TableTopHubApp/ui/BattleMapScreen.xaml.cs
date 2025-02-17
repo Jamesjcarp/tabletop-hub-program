@@ -33,8 +33,6 @@ namespace TableTopHubApp
         {
             this.InitializeComponent();
 
-            MapManager.InitMaps();
-
             this.mapGrid.ShowGridLines = true;
 
             this.mapGrid.MouseDown += this.MapGridMouseDown;

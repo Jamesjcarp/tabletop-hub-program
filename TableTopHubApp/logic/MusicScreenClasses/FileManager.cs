@@ -46,6 +46,97 @@ namespace TableTopHubApp
         }
 
         /// <summary>
+        /// Helper function called at the beginign of runtime to generate resource files if they are missing.
+        /// </summary>
+        public static void EnsurePathways()
+        {
+            if(!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources"))){
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\musicFolder")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\musicFolder"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\musicIntroFolder")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\musicIntroFolder"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\soundEffectsFolder")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\soundEffectsFolder"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\videos")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\videos"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\icons")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\icons"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\maps")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\maps"));
+            }
+
+            if (!Path.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\overlays")))
+            {
+                Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "resources\\textures\\overlays"));
+            }
+
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\IconList.txt")))
+            {
+                using (FileStream fs = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\IconList.txt")))
+                { 
+                }
+            }
+
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\MapList.txt")))
+            {
+                using (FileStream fs = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\MapList.txt")))
+                {
+                }
+            }
+
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\OverlayList.txt")))
+            {
+                using (FileStream fs = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\OverlayList.txt")))
+                {
+                }
+            }
+
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\SoundEffectList.txt")))
+            {
+                using (FileStream fs = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\SoundEffectList.txt")))
+                {
+                }
+            }
+
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\TrackList.txt")))
+            {
+                using (FileStream fs = File.Create(Path.Combine(Directory.GetCurrentDirectory(), "resources\\data\\TrackList.txt")))
+                {
+                }
+            }
+
+        }
+
+        /// <summary>
         /// Opens the file dialog and logs the result.
         /// </summary>
         /// <param name="type">the types of files allowed.</param>

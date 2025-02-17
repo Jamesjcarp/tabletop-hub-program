@@ -29,6 +29,10 @@ namespace TableTopHubApp
         {
             this.InitializeComponent();
 
+            // makes sure that all resources exist
+            FileManager.EnsurePathways();
+
+            MapManager.InitMaps();
             AudioManager.InitTracks();
             OverlayManager.InitAssets();
             AudioPlayer audioPlayer = new AudioPlayer();
@@ -587,7 +591,15 @@ namespace TableTopHubApp
             {
                 if (int.TryParse(this.AddContentMapWidthBox.Text, out width))
                 {
-                    data[2] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapWidthBox.Text, @"\s", string.Empty);
+                    if(width > 400)
+                    {
+                        this.addContentMapConfirmFeedback.Text = "Error: please use a width of 400 tiles or lower";
+                        return;
+                    }
+                    else
+                    {
+                        data[2] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapWidthBox.Text, @"\s", string.Empty);
+                    }
                 }
                 else
                 {
@@ -606,7 +618,15 @@ namespace TableTopHubApp
             {
                 if (int.TryParse(this.AddContentMapHeightBox.Text, out height))
                 {
-                    data[3] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapHeightBox.Text, @"\s", string.Empty);
+                    if(height > 400)
+                    {
+                        this.addContentMapConfirmFeedback.Text = "Error: please use a height of 400 tiles or lower";
+                        return;
+                    }
+                    else
+                    {
+                        data[3] = System.Text.RegularExpressions.Regex.Replace(this.AddContentMapHeightBox.Text, @"\s", string.Empty);
+                    }
                 }
                 else
                 {
@@ -632,7 +652,7 @@ namespace TableTopHubApp
 
         private void PlayMusicClick(object sender, RoutedEventArgs e)
         {
-            if (this.musicOptions.SelectedValue.ToString() != null)
+            if (this.musicOptions.SelectedValue != null)
             {
                 AudioPlayer.PrepMusicWorker(this.musicOptions.SelectedValue.ToString());
             }
@@ -676,12 +696,18 @@ namespace TableTopHubApp
 
         private void AddIconClick(object sender, RoutedEventArgs e)
         {
-            App.BattleTab.AddCreature(this.iconOptions.SelectedValue.ToString()!);
+            if (this.iconOptions.SelectedValue != null)
+            {
+                App.BattleTab.AddCreature(this.iconOptions.SelectedValue.ToString()!);
+            }
         }
 
         private void SelectMapClick(object sender, RoutedEventArgs e)
         {
-            App.BattleTab.OpenMap(this.mapOptions.SelectedValue.ToString()!);
+            if (this.mapOptions.SelectedValue != null)
+            {
+                App.BattleTab.OpenMap(this.mapOptions.SelectedValue.ToString()!);
+            }
         }
 
         /// <summary>

@@ -37,6 +37,7 @@ namespace TableTopHubApp
         {
             this.InitializeComponent();
             this.Topmost = true;
+            this.KeyDown += this.OnKeyDown;
 
             this.ChangeWindowState();
         }
@@ -247,6 +248,16 @@ namespace TableTopHubApp
             overlayVideo.Close();
 
             overlayVideo = new MediaElement();
+        }
+
+        // KeyDown event to handle the Delete key
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            // Prevents user from softlocking themselves incase the cover entire screen in overlay.
+            if (e.Key == Key.Delete || e.Key == Key.Back)
+            {
+                this.DisableOverlayElement();
+            }
         }
     }
 }
